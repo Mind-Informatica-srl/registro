@@ -49,3 +49,96 @@ func TestAddMovimentoToRegistro(t *testing.T) {
 		t.Error("Expected that movimento2 equal to listaMovimenti[0]")
 	}
 }
+
+// func TestModifyMovimentoToRegistro(t *testing.T) {
+// 	// ci aggiungo due movimenti
+// 	movimento1 := Movimento{
+// 		ID:              1,
+// 		Numero:          2,
+// 		DataMovimento:   time.Date(2021, 8, 15, 14, 30, 45, 100, time.Local),
+// 		DataInserimento: time.Date(2021, 8, 15, 14, 30, 45, 100, time.Local),
+// 		Quantita:        400,
+// 		TipoMovimento:   "carico",
+// 	}
+// 	movimento2 := Movimento{
+// 		ID:              2,
+// 		Numero:          3,
+// 		DataMovimento:   time.Date(2020, 8, 15, 14, 30, 45, 100, time.Local),
+// 		DataInserimento: time.Date(2021, 8, 15, 14, 30, 45, 100, time.Local),
+// 		Quantita:        500,
+// 		TipoMovimento:   "carico",
+// 	}
+// 	// istanzio un registro con già dei movimenti
+// 	testRegistro := Registro{
+// 		ID:             1,
+// 		ListaMovimenti: ListaMovimenti{movimento1, movimento2},
+// 	}
+// 	// creo nuovo movimento che scambierò con il movimento 1
+// 	movimento3 := Movimento{
+// 		Numero:        3,
+// 		DataMovimento: time.Date(2019, 8, 15, 14, 30, 45, 100, time.Local),
+// 		Quantita:      800,
+// 		TipoMovimento: "scarico",
+// 	}
+// 	// attuo modifica
+// 	err := testRegistro.ModifyMovimentoToRegistro(movimento1.ID, &movimento3)
+// 	// controllo che non abbia restituito errore
+// 	if err != nil {
+// 		panic(err)
+// 	}
+// 	// mi aspetto che il movimento con id 1 sia cambiato e che sia uguale a movimento3
+// 	isNotSame := movimento1.DataMovimento != movimento3.DataMovimento && movimento1.TipoMovimento != movimento3.TipoMovimento && movimento1.Quantita != movimento3.Quantita
+// 	if isNotSame {
+// 		t.Error("I movimenti sono differenti")
+// 	}
+// 	// controllo che il movimento modificato sia il primo in ordine nel registro dato che data movimento 2019
+// 	// if testRegistro.ListaMovimenti[0] == movimento3 {
+// 	// 	t.Error("Expected that movimento2 equal to listaMovimenti[0]")
+// 	// }
+
+// }
+
+func TestEliminareMovimentoToRegistro(t *testing.T) {
+	movimento1 := Movimento{
+		ID:              1,
+		Numero:          2,
+		DataMovimento:   time.Date(2021, 8, 15, 14, 30, 45, 100, time.Local),
+		DataInserimento: time.Date(2021, 8, 15, 14, 30, 45, 100, time.Local),
+		Quantita:        400,
+		TipoMovimento:   "carico",
+	}
+	movimento2 := Movimento{
+		ID:              2,
+		Numero:          3,
+		DataMovimento:   time.Date(2020, 8, 15, 14, 30, 45, 100, time.Local),
+		DataInserimento: time.Date(2021, 8, 15, 14, 30, 45, 100, time.Local),
+		Quantita:        500,
+		TipoMovimento:   "scarico",
+	}
+	movimento3 := Movimento{
+		ID:              3,
+		Numero:          4,
+		DataMovimento:   time.Date(2020, 8, 15, 14, 30, 45, 100, time.Local),
+		DataInserimento: time.Date(2021, 8, 15, 14, 30, 45, 100, time.Local),
+		Quantita:        500,
+		TipoMovimento:   "carico",
+	}
+	// istanzio un registro con già dei movimenti
+	testRegistro := Registro{
+		ID:             1,
+		ListaMovimenti: ListaMovimenti{movimento1, movimento2, movimento3},
+	}
+	// elimino dal registro il movimento1
+	testRegistro.EliminareMovimentoToRegistro(movimento1.ID)
+	// verifico che nella lista dei movimenti non ci sia più movimento
+	for _, elemento := range testRegistro.ListaMovimenti {
+		if elemento.ID == movimento1.ID {
+			t.Error("Elemento presente ancora nel db")
+		}
+	}
+	// verifico riordinamento e che quindi primo elemento della lista movimenti sia movimento 3
+	if testRegistro.ListaMovimenti[0].ID != movimento3.ID {
+		t.Error("I movimenti sono diversi")
+	}
+
+}
