@@ -69,3 +69,7 @@ func main() {
 	}
 
 }
+
+func returnaNumero2() int {
+	return 2
+}
