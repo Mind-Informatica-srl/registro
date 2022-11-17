@@ -50,53 +50,55 @@ func TestAddMovimentoToRegistro(t *testing.T) {
 	}
 }
 
-// func TestModifyMovimentoToRegistro(t *testing.T) {
-// 	// ci aggiungo due movimenti
-// 	movimento1 := Movimento{
-// 		ID:              1,
-// 		Numero:          2,
-// 		DataMovimento:   time.Date(2021, 8, 15, 14, 30, 45, 100, time.Local),
-// 		DataInserimento: time.Date(2021, 8, 15, 14, 30, 45, 100, time.Local),
-// 		Quantita:        400,
-// 		TipoMovimento:   "carico",
-// 	}
-// 	movimento2 := Movimento{
-// 		ID:              2,
-// 		Numero:          3,
-// 		DataMovimento:   time.Date(2020, 8, 15, 14, 30, 45, 100, time.Local),
-// 		DataInserimento: time.Date(2021, 8, 15, 14, 30, 45, 100, time.Local),
-// 		Quantita:        500,
-// 		TipoMovimento:   "carico",
-// 	}
-// 	// istanzio un registro con già dei movimenti
-// 	testRegistro := Registro{
-// 		ID:             1,
-// 		ListaMovimenti: ListaMovimenti{movimento1, movimento2},
-// 	}
-// 	// creo nuovo movimento che scambierò con il movimento 1
-// 	movimento3 := Movimento{
-// 		Numero:        3,
-// 		DataMovimento: time.Date(2019, 8, 15, 14, 30, 45, 100, time.Local),
-// 		Quantita:      800,
-// 		TipoMovimento: "scarico",
-// 	}
-// 	// attuo modifica
-// 	err := testRegistro.ModifyMovimentoToRegistro(movimento1.ID, &movimento3)
-// 	// controllo che non abbia restituito errore
-// 	if err != nil {
-// 		panic(err)
-// 	}
-// 	// mi aspetto che il movimento con id 1 sia cambiato e che sia uguale a movimento3
-// 	isNotSame := movimento1.DataMovimento != movimento3.DataMovimento && movimento1.TipoMovimento != movimento3.TipoMovimento && movimento1.Quantita != movimento3.Quantita
-// 	if isNotSame {
-// 		t.Error("I movimenti sono differenti")
-// 	}
-// 	// controllo che il movimento modificato sia il primo in ordine nel registro dato che data movimento 2019
-// 	// if testRegistro.ListaMovimenti[0] == movimento3 {
-// 	// 	t.Error("Expected that movimento2 equal to listaMovimenti[0]")
-// 	// }
-
-// }
+func TestModifyMovimentoToRegistro(t *testing.T) {
+	// ci aggiungo due movimenti
+	movimento1 := Movimento{
+		ID:              1,
+		Numero:          2,
+		DataMovimento:   time.Date(2021, 8, 15, 14, 30, 45, 100, time.Local),
+		DataInserimento: time.Date(2021, 8, 15, 14, 30, 45, 100, time.Local),
+		Quantita:        400,
+		TipoMovimento:   "carico",
+	}
+	movimento2 := Movimento{
+		ID:              2,
+		Numero:          3,
+		DataMovimento:   time.Date(2020, 8, 15, 14, 30, 45, 100, time.Local),
+		DataInserimento: time.Date(2021, 8, 15, 14, 30, 45, 100, time.Local),
+		Quantita:        500,
+		TipoMovimento:   "carico",
+	}
+	// istanzio un registro con già dei movimenti
+	testRegistro := Registro{
+		ID:             1,
+		ListaMovimenti: ListaMovimenti{movimento1, movimento2},
+	}
+	// creo nuovo movimento che scambierò con il movimento 1
+	movimento3 := Movimento{
+		Numero:        3,
+		DataMovimento: time.Date(2019, 8, 15, 14, 30, 45, 100, time.Local),
+		Quantita:      800,
+		TipoMovimento: "scarico",
+	}
+	// attuo modifica
+	err := testRegistro.ModifyMovimentoToRegistro(movimento1.ID, &movimento3)
+	// controllo che non abbia restituito errore
+	if err != nil {
+		panic(err)
+	}
+	// mi aspetto che il movimento con id 1 sia cambiato e che sia uguale a movimento3
+	for _, v := range testRegistro.ListaMovimenti {
+		if v.ID == movimento1.ID {
+			if v.TipoMovimento != movimento3.TipoMovimento && v.Quantita != movimento3.Quantita && v.DataMovimento != movimento3.DataMovimento {
+				t.Error("I movimenti sono diversi")
+			}
+		}
+	}
+	// controllo che il movimento modificato sia il primo in ordine nel registro dato che data movimento 2019
+	if testRegistro.ListaMovimenti[0].DataMovimento != movimento3.DataMovimento {
+		t.Error("Le date sono diverse quindi registro non oridinato")
+	}
+}
 
 func TestEliminareMovimentoToRegistro(t *testing.T) {
 	movimento1 := Movimento{
@@ -141,4 +143,56 @@ func TestEliminareMovimentoToRegistro(t *testing.T) {
 		t.Error("I movimenti sono diversi")
 	}
 
+}
+
+func TestTrovaIndiceConId(t *testing.T) {
+	var sliceMovimento []Movimento
+	movimento1 := Movimento{
+		ID:              1,
+		Numero:          2,
+		DataMovimento:   time.Date(2021, 8, 15, 14, 30, 45, 100, time.Local),
+		DataInserimento: time.Date(2021, 8, 15, 14, 30, 45, 100, time.Local),
+		Quantita:        400,
+		TipoMovimento:   "carico",
+	}
+	movimento2 := Movimento{
+		ID:              24,
+		Numero:          3,
+		DataMovimento:   time.Date(2020, 8, 15, 14, 30, 45, 100, time.Local),
+		DataInserimento: time.Date(2021, 8, 15, 14, 30, 45, 100, time.Local),
+		Quantita:        500,
+		TipoMovimento:   "carico",
+	}
+	sliceMovimento = append(sliceMovimento, movimento1, movimento2)
+	// cerco lista id presente nella lista
+	result := trovaIndice(24, sliceMovimento)
+	if result == -1 {
+		t.Error("Il movimento con l'id inserito non è presente nella lista")
+	}
+}
+
+func TestTrovaIndicesenzaId(t *testing.T) {
+	var sliceMovimento []Movimento
+	movimento1 := Movimento{
+		ID:              1,
+		Numero:          2,
+		DataMovimento:   time.Date(2021, 8, 15, 14, 30, 45, 100, time.Local),
+		DataInserimento: time.Date(2021, 8, 15, 14, 30, 45, 100, time.Local),
+		Quantita:        400,
+		TipoMovimento:   "carico",
+	}
+	movimento2 := Movimento{
+		ID:              24,
+		Numero:          3,
+		DataMovimento:   time.Date(2020, 8, 15, 14, 30, 45, 100, time.Local),
+		DataInserimento: time.Date(2021, 8, 15, 14, 30, 45, 100, time.Local),
+		Quantita:        500,
+		TipoMovimento:   "carico",
+	}
+	sliceMovimento = append(sliceMovimento, movimento1, movimento2)
+	// cerco lista id presente nella lista
+	result := trovaIndice(25, sliceMovimento)
+	if result != -1 {
+		t.Error("Il movimento con l'id inserito è presente nella lista")
+	}
 }
