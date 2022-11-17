@@ -196,3 +196,74 @@ func TestTrovaIndicesenzaId(t *testing.T) {
 		t.Error("Il movimento con l'id inserito è presente nella lista")
 	}
 }
+
+func TestRiordinaRegistro(t *testing.T) {
+	// ci aggiungo due movimenti
+	movimento1 := Movimento{
+		ID:              1,
+		Numero:          2,
+		DataMovimento:   time.Date(2021, 8, 15, 14, 30, 45, 100, time.Local),
+		DataInserimento: time.Date(2021, 8, 15, 14, 30, 45, 100, time.Local),
+		Quantita:        400,
+		TipoMovimento:   "carico",
+	}
+	movimento2 := Movimento{
+		ID:              2,
+		Numero:          3,
+		DataMovimento:   time.Date(2020, 8, 15, 14, 30, 45, 100, time.Local),
+		DataInserimento: time.Date(2020, 8, 15, 14, 30, 45, 100, time.Local),
+		Quantita:        500,
+		TipoMovimento:   "carico",
+	}
+	movimento3 := Movimento{
+		ID:              3,
+		Numero:          4,
+		DataMovimento:   time.Date(2020, 8, 15, 14, 30, 45, 100, time.Local),
+		DataInserimento: time.Date(2020, 8, 15, 14, 30, 45, 100, time.Local),
+		Quantita:        1000,
+		TipoMovimento:   "scarico",
+	}
+	// creo registro per prendere movimenti
+	// istanzio un registro con già dei movimenti
+	testRegistro := Registro{
+		ID:             1,
+		ListaMovimenti: ListaMovimenti{movimento1, movimento2, movimento3},
+	}
+	movimento1Risultato := Movimento{
+		ID:              2,
+		Numero:          1,
+		DataMovimento:   time.Date(2020, 8, 15, 14, 30, 45, 100, time.Local),
+		DataInserimento: time.Date(2020, 8, 15, 14, 30, 45, 100, time.Local),
+		Quantita:        500,
+		TipoMovimento:   "carico",
+	}
+	movimento2Risultato := Movimento{
+		ID:              3,
+		Numero:          2,
+		DataMovimento:   time.Date(2020, 8, 15, 14, 30, 45, 100, time.Local),
+		DataInserimento: time.Date(2020, 8, 15, 14, 30, 45, 100, time.Local),
+		Quantita:        1000,
+		TipoMovimento:   "scarico",
+	}
+	movimento3Risultato := Movimento{
+		ID:              1,
+		Numero:          1,
+		DataMovimento:   time.Date(2021, 8, 15, 14, 30, 45, 100, time.Local),
+		DataInserimento: time.Date(2021, 8, 15, 14, 30, 45, 100, time.Local),
+		Quantita:        400,
+		TipoMovimento:   "carico",
+	}
+	testRisultatoRegistro := Registro{
+		ID:             2,
+		ListaMovimenti: ListaMovimenti{movimento1Risultato, movimento2Risultato, movimento3Risultato},
+	}
+	err := testRegistro.riordinaRegistro()
+	if err != nil {
+		panic(err)
+	}
+	// verifico che alla pozione 0 della lista movimenti sia presente il movimento 2
+	if testRegistro.ListaMovimenti[0] != testRisultatoRegistro.ListaMovimenti[0] && testRegistro.ListaMovimenti[1] != testRisultatoRegistro.ListaMovimenti[1] && testRegistro.ListaMovimenti[2] != testRisultatoRegistro.ListaMovimenti[2] {
+		t.Error("Movimenti non corretti")
+	}
+
+}
