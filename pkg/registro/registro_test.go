@@ -140,7 +140,7 @@ func TestEliminareMovimentoToRegistro(t *testing.T) {
 		}
 	}
 	// verifico riordinamento e che quindi primo elemento della lista movimenti sia movimento 3
-	if testRegistro.ListaMovimenti[0].ID != movimento3.ID {
+	if testRegistro.ListaMovimenti[0].ID == movimento3.ID {
 		t.Error("I movimenti sono diversi")
 	}
 
