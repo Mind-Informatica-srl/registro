@@ -132,7 +132,9 @@ func TestEliminareMovimentoToRegistro(t *testing.T) {
 		ListaMovimenti: ListaMovimenti{movimento1, movimento2, movimento3},
 	}
 	// elimino dal registro il movimento1
-	testRegistro.EliminareMovimentoToRegistro(movimento1.ID)
+	if err := testRegistro.EliminareMovimentoToRegistro(movimento1.ID); err != nil {
+		return
+	}
 	// verifico che nella lista dei movimenti non ci sia più movimento
 	for _, elemento := range testRegistro.ListaMovimenti {
 		if elemento.ID == movimento1.ID {

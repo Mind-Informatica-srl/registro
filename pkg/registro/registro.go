@@ -108,10 +108,14 @@ func (re *Registro) CreaCsvFile() (path string, err error) {
 	}
 	csvwriter := csv.NewWriter(csvFile)
 	column := []string{"Movimento", "Datainserimento", "DataMovimento", "Numeromovimento", "Quantita"}
-	csvwriter.Write(column)
+	if err = csvwriter.Write(column); err != nil {
+		return
+	}
 	for _, movimento := range re.ListaMovimenti {
 		row := []string{movimento.TipoMovimento, movimento.DataInserimento.String(), movimento.DataMovimento.String(), strconv.Itoa(movimento.Numero), strconv.Itoa(movimento.Quantita)}
-		csvwriter.Write(row)
+		if err = csvwriter.Write(row); err != nil {
+			return
+		}
 	}
 	csvwriter.Flush()
 	csvFile.Close()
