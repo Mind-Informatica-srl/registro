@@ -46,11 +46,21 @@ func main() {
 		TipoMovimento:   "carico",
 	}
 	// aggiungere movimenti al registro
-	instanzaRegistro.AddMovimentoToRegistro(&movimento1)
-	instanzaRegistro.AddMovimentoToRegistro(&movimento2)
-	instanzaRegistro.AddMovimentoToRegistro(&movimento3)
-	instanzaRegistro.AddMovimentoToRegistro(&movimento4)
-	instanzaRegistro.CreaCsvFile()
+	if err := instanzaRegistro.AddMovimentoToRegistro(&movimento1); err != nil {
+		panic(err)
+	}
+	if err := instanzaRegistro.AddMovimentoToRegistro(&movimento2); err != nil {
+		panic(err)
+	}
+	if err := instanzaRegistro.AddMovimentoToRegistro(&movimento3); err != nil {
+		panic(err)
+	}
+	if err := instanzaRegistro.AddMovimentoToRegistro(&movimento4); err != nil {
+		panic(err)
+	}
+	if _, err := instanzaRegistro.CreaCsvFile(); err != nil {
+		panic(err)
+	}
 
 	registro1 := registro.Registro{
 		ID: 1,
@@ -68,8 +78,4 @@ func main() {
 		fmt.Println(path2)
 	}
 
-}
-
-func returnaNumero2() int {
-	return 2
 }
