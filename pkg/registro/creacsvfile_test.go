@@ -59,4 +59,5 @@ func TestCSVFile(t *testing.T) {
 			t.Error("Record del csv diversi da quelli previsti")
 		}
 	}
+	os.Remove(path)
 }
