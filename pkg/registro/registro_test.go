@@ -23,12 +23,14 @@ func TestLenListaMovimenti(t *testing.T) {
 		Quantita:        400,
 		TipoMovimento:   "carico",
 	}
-	var listaMovimenti ListaMovimenti
+	registroTest := Registro{
+		ID: 2,
+	}
 	// aggiungo/appendo all'instanza di listaMovimenti i movimenti precedentemente inseriti
-	listaMovimenti = append(listaMovimenti, movimento1, movimento2)
+	registroTest.ListaMovimenti = append(registroTest.ListaMovimenti, movimento1, movimento2)
 	// mi aspetto che la lista movimenti sia uguale a 2 dato che ho inserito 2 elementi
-	if listaMovimenti.Len() != 2 {
-		t.Errorf("Valore attesso della lunghezza della lista %d but got %d", 2, listaMovimenti.Len())
+	if registroTest.Len() != 2 {
+		t.Errorf("Valore attesso della lunghezza della lista %d but got %d", 2, registroTest.Len())
 	}
 }
 
@@ -50,14 +52,16 @@ func TestLessListaMovimenti(t *testing.T) {
 		Quantita:        400,
 		TipoMovimento:   "carico",
 	}
-	var listaMovimenti ListaMovimenti
-	listaMovimenti = append(listaMovimenti, movimento1, movimento2)
+	registroTest := Registro{
+		ID: 2,
+	}
+	registroTest.ListaMovimenti = append(registroTest.ListaMovimenti, movimento1, movimento2)
 	// Scambio primo elemento della lista con secondo elemento della lista
-	listaMovimenti.Swap(0, 1)
+	registroTest.Swap(0, 1)
 	// mi aspetto che il secondo movimento dopo lo swap sia il primo della lista dato che l'ho inserito per ultimo
-	checkSecondoMovimentoPrimoLista := listaMovimenti[0].ID == movimento2.ID
+	checkSecondoMovimentoPrimoLista := registroTest.ListaMovimenti[0].ID == movimento2.ID
 	if checkSecondoMovimentoPrimoLista != true {
-		t.Errorf("Attesso movimento 2 come primo della lista ma ho %v", listaMovimenti[0])
+		t.Errorf("Attesso movimento 2 come primo della lista ma ho %v", registroTest.ListaMovimenti[0])
 	}
 }
 
@@ -112,21 +116,23 @@ func TestSwapListaMovimenti(t *testing.T) {
 		TipoMovimento:   "carico",
 	}
 	// creo instanza lista movimenti
-	var listaMovimenti ListaMovimenti
-	listaMovimenti = append(listaMovimenti, movimento1, movimento2, movimento3, movimento4, movimento5, movimento6)
+	registroTest := Registro{
+		ID: 2,
+	}
+	registroTest.ListaMovimenti = append(registroTest.ListaMovimenti, movimento1, movimento2, movimento3, movimento4, movimento5, movimento6)
 	// testo tramite data movimento
 	// mi aspetto che il primo movimento della lista(index=0) abbia data di movimento che sia dopo di quella del secondo movimento e quindi ritorni false
-	if listaMovimenti.Less(0, 1) == true {
+	if registroTest.Less(0, 1) == true {
 		t.Errorf("Data di movimento del secondo elemento della lista viene dopo di quella del primo movimento della lista ")
 	}
 	// testo tramite data inserimento
 	// adesso mi aspetto che il terzo movimento della lista(index=2) abbia data di inserimento che dopo di quella del movimento e che quinndi ritorni false
-	if listaMovimenti.Less(2, 3) == true {
+	if registroTest.Less(2, 3) == true {
 		t.Error("Data di inserimento del quarto elemento della lista viene dopo di quella del terzo movimento della lista")
 	}
 	// testo tramite  tipoMovimento del Movimento
 	// mi aspetto che alfabeticamente lo scarico del quinto elemento della lista(index=4) venga alfabeticamente dopo il carico del sesto elemento della lista
-	if listaMovimenti.Less(4, 5) == true {
+	if registroTest.Less(4, 5) == true {
 		t.Error("Il tipo di movimento scarico del sesto elemento della lista è venuto alfabeticamente prima del quinto elemento della lista chè un tipo movimento carico")
 	}
 }

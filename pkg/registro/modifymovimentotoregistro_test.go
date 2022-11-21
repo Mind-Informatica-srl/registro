@@ -26,7 +26,7 @@ func TestModifyMovimentoToRegistro(t *testing.T) {
 	// istanzio un registro con già dei movimenti
 	testRegistro := Registro{
 		ID:             1,
-		ListaMovimenti: ListaMovimenti{movimento1, movimento2},
+		ListaMovimenti: []Movimento{movimento1, movimento2},
 	}
 	// creo nuovo movimento che scambierò con il movimento 1
 	movimento3 := Movimento{
