@@ -55,7 +55,7 @@ func TestOrdinaPerDataInserimento(t *testing.T) {
 		TipoMovimento:   "carico",
 	}
 	// mi aspetto che la funzione restitusca false dato che data inserimento movimento 2 è più piccola di data di inserimento del movimento 1
-	if OrdinaPerDataMovimento(movimento1, movimento2) != false {
+	if OrdinaPerDataInserimento(movimento1, movimento2) != false {
 		t.Error("Attesso movimento 2 con data di movimento che viene prima di quella di movimento 1")
 	}
 }
@@ -79,7 +79,7 @@ func TestOrdinaPerTipoMovimento(t *testing.T) {
 		TipoMovimento:   "carico",
 	}
 	// mi aspetto che la funzione restitusca false dato che tipo movimento  "carico" del movimento 2 viene alfabeticamente di tipo movimento "scarico" del movimento 1
-	if OrdinaPerDataMovimento(movimento1, movimento2) != false {
+	if OrdinaPerTipoMovimento(movimento1, movimento2) != false {
 		t.Error("Attesso movimento 2 con tipo di movimento che viene prima di quello di movimento 1")
 	}
 	// testo tipoMovimento se tipo del movimento 1 è  tipo del movimento 2
@@ -87,7 +87,7 @@ func TestOrdinaPerTipoMovimento(t *testing.T) {
 	movimento2.TipoMovimento = "scarico"
 	// quindi si ordina per data inserimento
 	// mi aspetto che la funzione restitusca false dato che data inserimento movimento 2 è più piccola di data di inserimento del movimento 1
-	if OrdinaPerDataMovimento(movimento1, movimento2) != false {
+	if OrdinaPerTipoMovimento(movimento1, movimento2) != false {
 		t.Error("Attesso movimento 2 con tipo di movimento che viene prima di quello di movimento 1")
 	}
 }
