@@ -3,7 +3,7 @@ package registro
 import "sort"
 
 func (re *Registro) riordinaRegistro() (err error) {
-	sort.Sort(re.ListaMovimenti)
+	sort.Sort(re)
 	// primo movimento registro deve avere numero 1
 	// quando numero anno diverso da quello precedente numero torna 1
 	re.ListaMovimenti[0].Numero = 1
