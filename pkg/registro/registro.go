@@ -1,5 +1,7 @@
 package registro
 
+import "errors"
+
 type Registro struct {
 	ID             int
 	ListaMovimenti []Movimento
@@ -54,4 +56,37 @@ func (registro *Registro) Less(i, j int) bool {
 
 func (registro *Registro) Swap(i, j int) {
 	registro.ListaMovimenti[i], registro.ListaMovimenti[j] = registro.ListaMovimenti[j], registro.ListaMovimenti[i]
+}
+
+func (registro *Registro) CalcolaSaldo(codCer Cer, movimento Movimento) (int, error) {
+	saldo := 0
+	if movimento.TipoMovimento == "carico" {
+		for _, v := range registro.ListaMovimenti {
+			if v.DataMovimento.Before(movimento.DataMovimento) {
+				if v.TipoMovimento == "carico" {
+					saldo += v.Quantita
+				} else {
+					saldo -= v.Quantita
+				}
+			}
+		}
+		saldo += movimento.Quantita
+		return saldo, nil
+	} else {
+		for _, v := range registro.ListaMovimenti {
+			if v.DataMovimento.Before(movimento.DataMovimento) || v.DataMovimento.Equal(movimento.DataMovimento) {
+				if v.TipoMovimento == "carico" {
+					saldo += v.Quantita
+				} else {
+					saldo -= v.Quantita
+				}
+			}
+		}
+		if saldo < movimento.Quantita {
+			return 0, errors.New("Scarico più grande del saldo")
+		} else {
+			risultaofinale := saldo - movimento.Quantita
+			return risultaofinale, nil
+		}
+	}
 }
