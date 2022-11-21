@@ -1,6 +1,8 @@
 package registro
 
-import "time"
+import (
+	"time"
+)
 
 type Movimento struct {
 	ID              int
@@ -9,4 +11,5 @@ type Movimento struct {
 	DataInserimento time.Time
 	Quantita        int
 	TipoMovimento   string
+	CodiceCer       Cer
 }
