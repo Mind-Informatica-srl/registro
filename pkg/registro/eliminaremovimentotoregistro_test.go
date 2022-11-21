@@ -34,7 +34,7 @@ func TestEliminareMovimentoToRegistro(t *testing.T) {
 	// istanzio un registro con i tre movimenti instanziati precedentemente
 	testRegistro := Registro{
 		ID:             1,
-		ListaMovimenti: ListaMovimenti{movimento1, movimento2, movimento3},
+		ListaMovimenti: []Movimento{movimento1, movimento2, movimento3},
 	}
 	// elimino dal registro il movimento1
 	if err := testRegistro.EliminareMovimentoToRegistro(movimento1.ID); err != nil {

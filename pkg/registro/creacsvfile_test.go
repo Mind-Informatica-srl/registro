@@ -28,7 +28,7 @@ func TestCSVFile(t *testing.T) {
 	// istanzio un registro con i tre movimenti instanziati precedentemente
 	testRegistro := Registro{
 		ID:             1,
-		ListaMovimenti: ListaMovimenti{movimento1},
+		ListaMovimenti: []Movimento{movimento1},
 	}
 	path, err := testRegistro.CreaCsvFile()
 	if err != nil {

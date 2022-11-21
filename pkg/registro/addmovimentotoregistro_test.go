@@ -9,7 +9,7 @@ func TestAddMovimentoToRegistro(t *testing.T) {
 	// istanzio un registro
 	testRegistro := Registro{
 		ID:             1,
-		ListaMovimenti: ListaMovimenti{},
+		ListaMovimenti: []Movimento{},
 	}
 
 	// ci aggiungo un movimento

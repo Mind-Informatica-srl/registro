@@ -34,7 +34,7 @@ func TestRiordinaRegistro(t *testing.T) {
 	// istanzio un registro con i tre movimenti
 	testRegistro := Registro{
 		ID:             1,
-		ListaMovimenti: ListaMovimenti{movimento1, movimento2, movimento3},
+		ListaMovimenti: []Movimento{movimento1, movimento2, movimento3},
 	}
 	// se si verifica errore, loggare con fallimento l'errore
 	err := testRegistro.riordinaRegistro()
