@@ -21,6 +21,8 @@ func (re *Registro) AddMovimentoToRegistro(movimento *Movimento) (err error) {
 	}
 	// appendo il nuovo movimento alla lista dei movimenti del registro
 	re.ListaMovimenti = append(re.ListaMovimenti, *movimento)
+	// dato che nuovo elemento è stato inserito riordino lista elementi del registro
+	err = re.riordinaRegistro()
 	saldo, errore := re.CalcolaSaldo(*movimento)
 	err = errore
 	if err != nil {
@@ -29,7 +31,5 @@ func (re *Registro) AddMovimentoToRegistro(movimento *Movimento) (err error) {
 		panic(errors.New(stringaerrore))
 	}
 	fmt.Println(saldo)
-	// dato che nuovo elemento è stato inserito riordino lista elementi del registro
-	err = re.riordinaRegistro()
 	return
 }

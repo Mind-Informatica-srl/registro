@@ -29,13 +29,22 @@ func main() {
 		Numero:          3,
 		DataMovimento:   time.Date(2021, 8, 15, 14, 30, 45, 100, time.Local),
 		DataInserimento: time.Date(2021, 8, 15, 14, 30, 45, 100, time.Local),
-		Quantita:        4000,
+		Quantita:        5000,
 		TipoMovimento:   "carico",
 		CodiceCer:       "123456",
 	}
 	movimento4 := registro.Movimento{
 		ID:              4,
 		Numero:          4,
+		DataMovimento:   time.Date(2021, 9, 15, 14, 30, 45, 100, time.Local),
+		DataInserimento: time.Date(2021, 9, 15, 14, 30, 45, 100, time.Local),
+		Quantita:        4000,
+		TipoMovimento:   "scarico",
+		CodiceCer:       "123456",
+	}
+	movimento5 := registro.Movimento{
+		ID:              5,
+		Numero:          5,
 		DataMovimento:   time.Date(2021, 9, 15, 14, 30, 45, 100, time.Local),
 		DataInserimento: time.Date(2021, 9, 15, 14, 30, 45, 100, time.Local),
 		Quantita:        4000,
@@ -59,6 +68,10 @@ func main() {
 		panic(err)
 	}
 	err = newRegistro.AddMovimentoToRegistro(&movimento4)
+	if err != nil {
+		panic(err)
+	}
+	err = newRegistro.ModifyMovimentoToRegistro(3, &movimento5)
 	if err != nil {
 		panic(err)
 	}
