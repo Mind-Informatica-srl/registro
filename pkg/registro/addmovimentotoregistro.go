@@ -23,10 +23,16 @@ func (re *Registro) AddMovimentoToRegistro(movimento *Movimento) (err error) {
 	re.ListaMovimenti = append(re.ListaMovimenti, *movimento)
 	// dato che nuovo elemento è stato inserito riordino lista elementi del registro
 	err = re.riordinaRegistro()
+	if err != nil {
+		panic(err)
+	}
 	saldo, errore := re.CalcolaSaldo(*movimento)
 	err = errore
 	if err != nil {
-		re.EliminareMovimentoToRegistro(movimento.ID)
+		err = re.EliminareMovimentoToRegistro(movimento.ID)
+		if err != nil {
+			return err
+		}
 		stringaerrore := fmt.Sprintf("Movimento %d non è stato possibile inserirlo dato che la quantita del saldo è minore di quella dello scarico", movimento.ID)
 		panic(errors.New(stringaerrore))
 	}

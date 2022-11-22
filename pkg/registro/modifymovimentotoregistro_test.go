@@ -29,8 +29,13 @@ func TestModifyMovimentoToRegistro(t *testing.T) {
 	testRegistro := Registro{
 		ID: 1,
 	}
-	testRegistro.AddMovimentoToRegistro(&movimento1)
-	testRegistro.AddMovimentoToRegistro(&movimento2)
+
+	if err := testRegistro.AddMovimentoToRegistro(&movimento1); err != nil {
+		t.Error(err)
+	}
+	if err := testRegistro.AddMovimentoToRegistro(&movimento2); err != nil {
+		t.Error(err)
+	}
 	// creo nuovo movimento che scambierò con il movimento 1
 	movimento3 := Movimento{
 		Numero:        3,
