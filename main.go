@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"goProject/pkg/registro"
 	"time"
 )
@@ -75,4 +76,5 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+	fmt.Println(newRegistro.ListaMovimenti)
 }
