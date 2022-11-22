@@ -1,6 +1,8 @@
 package registro
 
-import "errors"
+import (
+	"errors"
+)
 
 type Registro struct {
 	ID             int
@@ -58,35 +60,23 @@ func (registro *Registro) Swap(i, j int) {
 	registro.ListaMovimenti[i], registro.ListaMovimenti[j] = registro.ListaMovimenti[j], registro.ListaMovimenti[i]
 }
 
-func (registro *Registro) CalcolaSaldo(codCer Cer, movimento Movimento) (int, error) {
+// Calcola Saldo
+func (registro Registro) CalcolaSaldo(movimento Movimento) (int, error) {
 	saldo := 0
-	if movimento.TipoMovimento == "carico" {
-		for _, v := range registro.ListaMovimenti {
-			if v.DataMovimento.Before(movimento.DataMovimento) {
-				if v.TipoMovimento == "carico" {
-					saldo += v.Quantita
+	codiceCerMovimento := movimento.CodiceCer
+	// parto da 0 per ogni movimento fino al movimneto -1
+	for _, v := range registro.ListaMovimenti {
+		if v.CodiceCer == codiceCerMovimento {
+			if v.TipoMovimento == "carico" {
+				saldo += v.Quantita
+			} else {
+				if saldo < v.Quantita {
+					return 0, errors.New("Nuovo errore relativo al saldo")
 				} else {
 					saldo -= v.Quantita
 				}
 			}
-		}
-		saldo += movimento.Quantita
-		return saldo, nil
-	} else {
-		for _, v := range registro.ListaMovimenti {
-			if v.DataMovimento.Before(movimento.DataMovimento) || v.DataMovimento.Equal(movimento.DataMovimento) {
-				if v.TipoMovimento == "carico" {
-					saldo += v.Quantita
-				} else {
-					saldo -= v.Quantita
-				}
-			}
-		}
-		if saldo < movimento.Quantita {
-			return 0, errors.New("Scarico più grande del saldo")
-		} else {
-			risultaofinale := saldo - movimento.Quantita
-			return risultaofinale, nil
 		}
 	}
+	return saldo, nil
 }

@@ -8,6 +8,7 @@ func (re *Registro) ModifyMovimentoToRegistro(id int, movimento *Movimento) (err
 	re.ListaMovimenti[indice].TipoMovimento = movimento.TipoMovimento
 	re.ListaMovimenti[indice].DataMovimento = movimento.DataMovimento
 	re.ListaMovimenti[indice].Quantita = movimento.Quantita
+	re.CalcolaSaldo(re.ListaMovimenti[indice])
 	// dato che elemento modificato è stato inserito riordino lista elementi del registro
 	err = re.riordinaRegistro()
 	return
