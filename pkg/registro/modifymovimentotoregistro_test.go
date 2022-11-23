@@ -50,6 +50,7 @@ func TestModifyMovimentoToRegistro(t *testing.T) {
 	}
 	// mi aspetto che nella posizione 1 della lista elementi i dati del movimento siano tornati alla versione di partenza dato che aggiungendo lo scarico il saldo tornerebbe inferiore allo scarico che volevamo inserire
 	if testRegistro.ListaMovimenti[1].Quantita != movimento2.Quantita && testRegistro.ListaMovimenti[1].TipoMovimento != movimento2.TipoMovimento && testRegistro.ListaMovimenti[1].DataMovimento != movimento2.DataMovimento {
-		t.Error("")
+		t.Error("Attesi dati del movimento fossero gli stessi di quelli del movimento di partenza")
 	}
+
 }

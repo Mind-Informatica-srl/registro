@@ -1,7 +1,6 @@
 package registro
 
 import (
-	"errors"
 	"fmt"
 )
 
@@ -14,20 +13,21 @@ func (re *Registro) EliminareMovimentoToRegistro(id int) (err error) {
 	movimentoDaEliminare := re.ListaMovimenti[indice]
 	// elimino dalla lista dei movimenti il movimento specificato
 	re.ListaMovimenti = append(re.ListaMovimenti[:indice], re.ListaMovimenti[indice+1:]...)
+	var saldo int
+	if saldo, err = re.CalcolaSaldo(movimentoDaEliminare); err != nil {
+		re.ListaMovimenti = append(re.ListaMovimenti, movimentoDaEliminare)
+		re.riordinaRegistro()
+		// se rifaccio calcola saldo e mi torna errore, rimettendo vecchio movimento significa che è presente un errore
+		if saldo, err = re.CalcolaSaldo(movimentoDaEliminare); err != nil {
+			panic(err)
+		}
+	}
+	fmt.Println(saldo)
 	// dato che elemento eliminato riordino lista movimenti del registro
 	err = re.riordinaRegistro()
 	if err != nil {
 		panic(err)
 	}
-	saldo, errore := re.CalcolaSaldo(movimentoDaEliminare)
-	err = errore
-	if err != nil {
-		re.ListaMovimenti = append(re.ListaMovimenti, movimentoDaEliminare)
-		stringaerrore := fmt.Sprintf("Movimento %d non è stato possibile eliminarlo dato che la quantita del saldo è minore di quella dello scarico", movimentoDaEliminare.ID)
-		panic(errors.New(stringaerrore))
-	}
-	fmt.Println(saldo)
+
 	return
 }
-
-// elimino elemto verifico che scarico non scoppi se scoppia panic error non puoi eliminare questo movimento senno scoppia scarico

@@ -19,6 +19,7 @@ func TestAddMovimentoToRegistro(t *testing.T) {
 		DataInserimento: time.Date(2021, 8, 15, 14, 30, 45, 100, time.Local),
 		Quantita:        400,
 		TipoMovimento:   "carico",
+		CodiceCer:       "123456",
 	}
 	err := testRegistro.AddMovimentoToRegistro(&movimento1)
 	// controllo che non abbia restituito errore
@@ -32,6 +33,7 @@ func TestAddMovimentoToRegistro(t *testing.T) {
 		DataInserimento: time.Date(2021, 8, 15, 14, 30, 45, 100, time.Local),
 		Quantita:        500,
 		TipoMovimento:   "carico",
+		CodiceCer:       "123456",
 	}
 	err = testRegistro.AddMovimentoToRegistro(&movimento2)
 	// controllo che non abbia restituito errore
