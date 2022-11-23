@@ -1,5 +1,7 @@
 package registro
 
+import "errors"
+
 type Registro struct {
 	ID             int
 	ListaMovimenti []Movimento
@@ -54,4 +56,41 @@ func (registro *Registro) Less(i, j int) bool {
 
 func (registro *Registro) Swap(i, j int) {
 	registro.ListaMovimenti[i], registro.ListaMovimenti[j] = registro.ListaMovimenti[j], registro.ListaMovimenti[i]
+}
+
+// Calcola Saldo
+func (registro Registro) CalcolaSaldo(movimento Movimento) int {
+	saldo := 0
+	indice := trovaIndice(movimento.ID, registro.ListaMovimenti)
+	for i, v := range registro.ListaMovimenti {
+		if i < indice && v.CodiceCer == movimento.CodiceCer {
+			if v.TipoMovimento == "carico" {
+				saldo += v.Quantita
+			} else {
+				saldo -= v.Quantita
+			}
+
+		} else {
+			// per efficienza codice faccio break per interrompere ciclo
+			break
+		}
+
+	}
+	return saldo
+}
+
+// Check Registro
+func (registro *Registro) CheckRegistro() (err error) {
+	// ciclare movimenti registro pe ogni scarico calcola saldo
+	var saldo int
+	for _, v := range registro.ListaMovimenti {
+		if v.TipoMovimento == "scarico" {
+			saldo = registro.CalcolaSaldo(v)
+			if saldo-v.Quantita < 0 {
+				err = errors.New("saldo minore dello scarico")
+				return
+			}
+		}
+	}
+	return
 }

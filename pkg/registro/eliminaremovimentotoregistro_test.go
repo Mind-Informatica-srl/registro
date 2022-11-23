@@ -1,6 +1,7 @@
 package registro
 
 import (
+	"fmt"
 	"testing"
 	"time"
 )
@@ -10,10 +11,11 @@ func TestEliminareMovimentoToRegistro(t *testing.T) {
 	movimento1 := Movimento{
 		ID:              1,
 		Numero:          2,
-		DataMovimento:   time.Date(2021, 8, 15, 14, 30, 45, 100, time.Local),
+		DataMovimento:   time.Date(2020, 8, 15, 14, 30, 45, 100, time.Local),
 		DataInserimento: time.Date(2021, 8, 15, 14, 30, 45, 100, time.Local),
 		Quantita:        400,
 		TipoMovimento:   "carico",
+		CodiceCer:       "123456",
 	}
 	movimento2 := Movimento{
 		ID:              2,
@@ -21,34 +23,49 @@ func TestEliminareMovimentoToRegistro(t *testing.T) {
 		DataMovimento:   time.Date(2020, 8, 15, 14, 30, 45, 100, time.Local),
 		DataInserimento: time.Date(2021, 8, 15, 14, 30, 45, 100, time.Local),
 		Quantita:        500,
-		TipoMovimento:   "scarico",
+		TipoMovimento:   "carico",
+		CodiceCer:       "123456",
 	}
 	movimento3 := Movimento{
 		ID:              3,
 		Numero:          4,
-		DataMovimento:   time.Date(2020, 8, 15, 14, 30, 45, 100, time.Local),
-		DataInserimento: time.Date(2021, 8, 15, 14, 30, 45, 100, time.Local),
+		DataMovimento:   time.Date(2020, 9, 15, 14, 30, 45, 100, time.Local),
+		DataInserimento: time.Date(2021, 9, 15, 14, 30, 45, 100, time.Local),
 		Quantita:        500,
-		TipoMovimento:   "carico",
-	}
-	// istanzio un registro con i tre movimenti instanziati precedentemente
-	testRegistro := Registro{
-		ID:             1,
-		ListaMovimenti: []Movimento{movimento1, movimento2, movimento3},
-	}
-	// elimino dal registro il movimento1
-	if err := testRegistro.EliminareMovimentoToRegistro(movimento1.ID); err != nil {
-		return
-	}
-	// verifico che nella lista dei movimenti non ci sia più movimento
-	for _, elemento := range testRegistro.ListaMovimenti {
-		if elemento.ID == movimento1.ID {
-			t.Error("Elemento presente ancora nel db")
-		}
-	}
-	// verifico riordinamento e che quindi primo elemento della lista movimenti sia movimento 3
-	if testRegistro.ListaMovimenti[0].ID != movimento3.ID {
-		t.Error("I movimenti sono diversi")
+		TipoMovimento:   "scarico",
+		CodiceCer:       "123456",
 	}
 
+	testRegistro := Registro{
+		ID: 1,
+	}
+	err := testRegistro.AddMovimentoToRegistro(&movimento1)
+	if err != nil {
+		fmt.Println(err)
+	}
+	err = testRegistro.AddMovimentoToRegistro(&movimento2)
+	if err != nil {
+		fmt.Println(err)
+	}
+	err = testRegistro.AddMovimentoToRegistro(&movimento3)
+	if err != nil {
+		fmt.Println(err)
+	}
+	err = testRegistro.EliminareMovimentoToRegistro(2)
+	if err != nil {
+		t.Error(err)
+	}
+	// addMovimentotoRegistro cambia id del movimento per questo creo un nuovo movimento con id 4 ed inoltre cambia anche data di inserimento per questo nel successivo if non le andrò a verificare
+	movimentoRisultato := Movimento{
+		ID:            4,
+		Quantita:      500,
+		TipoMovimento: "carico",
+		CodiceCer:     "123456",
+	}
+
+	// mi aspetto che alla seconda posizione nell'array di movimenti sia nuovamente presente il movimento 2 che prima era stato tolto
+	// inoltre mi aspetto che avvenga anche il riordinamento dato che lista di movimenti dopo viene riordinata
+	if testRegistro.ListaMovimenti[1].ID != movimentoRisultato.ID && testRegistro.ListaMovimenti[1].Quantita != movimentoRisultato.Quantita && testRegistro.ListaMovimenti[1].TipoMovimento != movimentoRisultato.TipoMovimento {
+		t.Error("Mi aspettavo che fosse presente in questa posizione dell'array di movimenti il movimento2 avente id 2")
+	}
 }

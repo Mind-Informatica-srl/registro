@@ -12,45 +12,45 @@ func TestModifyMovimentoToRegistro(t *testing.T) {
 		Numero:          2,
 		DataMovimento:   time.Date(2021, 8, 15, 14, 30, 45, 100, time.Local),
 		DataInserimento: time.Date(2021, 8, 15, 14, 30, 45, 100, time.Local),
-		Quantita:        400,
+		Quantita:        1500,
 		TipoMovimento:   "carico",
+		CodiceCer:       "123456",
 	}
 	movimento2 := Movimento{
 		ID:              2,
-		Numero:          3,
-		DataMovimento:   time.Date(2020, 8, 15, 14, 30, 45, 100, time.Local),
+		Numero:          2,
+		DataMovimento:   time.Date(2021, 8, 15, 14, 30, 45, 100, time.Local),
 		DataInserimento: time.Date(2021, 8, 15, 14, 30, 45, 100, time.Local),
-		Quantita:        500,
+		Quantita:        1500,
 		TipoMovimento:   "carico",
+		CodiceCer:       "123456",
 	}
 	// istanzio un registro con già dei movimenti
 	testRegistro := Registro{
-		ID:             1,
-		ListaMovimenti: []Movimento{movimento1, movimento2},
+		ID: 1,
+	}
+
+	if err := testRegistro.AddMovimentoToRegistro(&movimento1); err != nil {
+		t.Error(err)
+	}
+	if err := testRegistro.AddMovimentoToRegistro(&movimento2); err != nil {
+		t.Error(err)
 	}
 	// creo nuovo movimento che scambierò con il movimento 1
 	movimento3 := Movimento{
 		Numero:        3,
 		DataMovimento: time.Date(2019, 8, 15, 14, 30, 45, 100, time.Local),
-		Quantita:      800,
+		Quantita:      3000,
 		TipoMovimento: "scarico",
+		CodiceCer:     "123456",
 	}
-	// attuo modifica
-	err := testRegistro.ModifyMovimentoToRegistro(movimento1.ID, &movimento3)
-	// controllo che non abbia restituito errore
+	err := testRegistro.ModifyMovimentoToRegistro(2, &movimento3)
 	if err != nil {
 		t.Error(err)
 	}
-	// mi aspetto che il movimento con id 1 sia cambiato e che sia uguale a movimento3
-	for _, v := range testRegistro.ListaMovimenti {
-		if v.ID == movimento1.ID {
-			if v.TipoMovimento != movimento3.TipoMovimento && v.Quantita != movimento3.Quantita && v.DataMovimento != movimento3.DataMovimento {
-				t.Error("I movimenti sono diversi")
-			}
-		}
+	// mi aspetto che nella posizione 1 della lista elementi i dati del movimento siano tornati alla versione di partenza dato che aggiungendo lo scarico il saldo tornerebbe inferiore allo scarico che volevamo inserire
+	if testRegistro.ListaMovimenti[1].Quantita != movimento2.Quantita && testRegistro.ListaMovimenti[1].TipoMovimento != movimento2.TipoMovimento && testRegistro.ListaMovimenti[1].DataMovimento != movimento2.DataMovimento {
+		t.Error("Attesi dati del movimento fossero gli stessi di quelli del movimento di partenza")
 	}
-	// controllo che il primo in ordine nel registro sia il movimento modificato dato che data movimento 2019
-	if testRegistro.ListaMovimenti[0].ID != movimento1.ID {
-		t.Error("Le date sono diverse quindi registro non oridinato")
-	}
+
 }
