@@ -12,7 +12,7 @@ func CerValidator(cer Cer) error {
 		}
 	}
 	if count != 6 {
-		return errors.New("Codice cer non ha 6 cifre")
+		return errors.New("codice cer non ha 6 cifre")
 	} else {
 		return nil
 	}

@@ -55,9 +55,17 @@ func TestEliminareMovimentoToRegistro(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
+	// addMovimentotoRegistro cambia id del movimento per questo creo un nuovo movimento con id 4 ed inoltre cambia anche data di inserimento per questo nel successivo if non le andrò a verificare
+	movimentoRisultato := Movimento{
+		ID:            4,
+		Quantita:      500,
+		TipoMovimento: "carico",
+		CodiceCer:     "123456",
+	}
+
 	// mi aspetto che alla seconda posizione nell'array di movimenti sia nuovamente presente il movimento 2 che prima era stato tolto
 	// inoltre mi aspetto che avvenga anche il riordinamento dato che lista di movimenti dopo viene riordinata
-	if testRegistro.ListaMovimenti[1].ID != movimento2.ID {
+	if testRegistro.ListaMovimenti[1].ID != movimentoRisultato.ID && testRegistro.ListaMovimenti[1].Quantita != movimentoRisultato.Quantita && testRegistro.ListaMovimenti[1].TipoMovimento != movimentoRisultato.TipoMovimento {
 		t.Error("Mi aspettavo che fosse presente in questa posizione dell'array di movimenti il movimento2 avente id 2")
 	}
 }

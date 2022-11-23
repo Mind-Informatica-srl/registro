@@ -48,7 +48,7 @@ func TestAddMovimentoToRegistro(t *testing.T) {
 	}
 
 	// Ultimo test che verifico mi dià errore e se aggiungendo uno scarico maggiore della quantità del saldo attuale mi dia errore
-	if testRegistro.AddMovimentoToRegistro(&movimento3).Error() != "Movimento con id 2 non è stato possibile inserirlo dato che la quantita del saldo è minore di quella dello scarico" {
+	if testRegistro.AddMovimentoToRegistro(&movimento3).Error() != "Movimento con id 3 non è stato possibile inserirlo dato che la quantita del saldo è minore di quella dello scarico" {
 		t.Error("Mi aspetto che ci sia un errore dato lo scarico è maggiore del saldo")
 	}
 

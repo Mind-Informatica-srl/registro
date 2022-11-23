@@ -29,7 +29,6 @@ func (re *Registro) AddMovimentoToRegistro(movimento *Movimento) (err error) {
 		if err = re.EliminareMovimentoToRegistro(movimento.ID); err != nil {
 			return err
 		}
-		re.counter--
 		stringaerrore := fmt.Sprintf("Movimento con id %d non è stato possibile inserirlo dato che la quantita del saldo è minore di quella dello scarico", movimento.ID)
 		err = errors.New(stringaerrore)
 		return err
