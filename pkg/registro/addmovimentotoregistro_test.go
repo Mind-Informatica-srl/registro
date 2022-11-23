@@ -35,7 +35,7 @@ func TestAddMovimentoToRegistro(t *testing.T) {
 		CodiceCer:     "123456",
 	}
 	// mi aspetto che lista di movimenti sia vuota dato che primo movimento che volevo aggiungere alla lista dei movimenti era uno scarico e invece dovrebbe essere un carico
-	if testRegistro.AddMovimentoToRegistro(&movimento1).Error() != "Il primo elemento dell'array non può essere uno scarico" {
+	if testRegistro.AddMovimentoToRegistro(&movimento1).Error() != "il primo elemento dell'array non può essere uno scarico" {
 		t.Error("Mi aspetto che lista dei movimenti sia vuota dato che è stato inserito uno scarico come primo elemenento della lista dei moviemnti")
 	}
 	movimento1.TipoMovimento = "carico"
