@@ -65,9 +65,9 @@ func (registro Registro) CalcolaSaldo(movimento Movimento) int {
 	for i, v := range registro.ListaMovimenti {
 		if i < indice && v.CodiceCer == movimento.CodiceCer {
 			if v.TipoMovimento == "carico" {
-				saldo += movimento.Quantita
+				saldo += v.Quantita
 			} else {
-				saldo -= movimento.Quantita
+				saldo -= v.Quantita
 			}
 
 		} else {

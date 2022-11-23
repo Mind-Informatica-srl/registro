@@ -11,12 +11,16 @@ func (re *Registro) EliminareMovimentoToRegistro(id int) (err error) {
 	re.ListaMovimenti = append(re.ListaMovimenti[:indice], re.ListaMovimenti[indice+1:]...)
 	if err = re.CheckRegistro(); err != nil {
 		re.ListaMovimenti = append(re.ListaMovimenti, movimentoDaEliminare)
-		re.riordinaRegistro()
+		if err = re.riordinaRegistro(); err != nil {
+			return
+		}
+		if err = re.CheckRegistro(); err != nil {
+			return
+		}
 	}
 	// dato che elemento eliminato riordino lista movimenti del registro
-	err = re.riordinaRegistro()
-	if err != nil {
-		panic(err)
+	if err = re.riordinaRegistro(); err != nil {
+		return
 	}
 
 	return
